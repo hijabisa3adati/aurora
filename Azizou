@@ -1,0 +1,28 @@
+import re
+
+def extract_email_or_phone(text):
+    # تعبير نمطي للبحث عن البريد الإلكتروني
+    email_pattern = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+    # تعبير نمطي للبحث عن رقم الهاتف (تنسيق دولي أو محلي)
+    phone_pattern = r'\+?\d{1,3}[-.\s]??\d{1,4}[-.\s]??\d{1,4}[-.\s]??\d{1,9}'
+
+    # البحث عن البريد الإلكتروني في النص
+    email_match = re.findall(email_pattern, text)
+    # البحث عن رقم الهاتف في النص
+    phone_match = re.findall(phone_pattern, text)
+
+    # إذا وجد بريد إلكتروني في النص، إرجاعه
+    if email_match:
+        return email_match[0]  # إرجاع أول بريد إلكتروني موجود
+
+    # إذا لم يكن هناك بريد إلكتروني ولكن وجد رقم هاتف
+    if phone_match:
+        # إرجاع البريد الإلكتروني بعدد أرقام الهاتف بدون طلب موافقة
+        return f"user{len(phone_match)}@example.com"
+
+    return None
+
+# مثال على الاستخدام
+text = "يرجى التواصل عبر البريد الإلكتروني example@example.com أو رقم الهاتف +1234567890"
+result = extract_email_or_phone(text)
+print(result)
